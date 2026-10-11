@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Us &amp; Send a Request | WebSecretaries.com</title>
+  <meta name="description" content="Contact WebSecretaries: send your project details and files online, call or text +1 (404) 721-2620, or email info@WebSecretaries.com.">
+  <link rel="canonical" href="https://websecretaries.com/contact.html">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Marcellus&family=Marcellus+SC&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="./">WebSecretaries<span>.com</span></a>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
+      <nav class="nav" id="site-nav" aria-label="Main">
+        <a href="./">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Services &amp; Pricing</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+        <a class="btn" href="contact.html#request">Get Help Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Contact Us</span>
+        <h1>Let us know what we can do for you</h1>
+        <p>Tell us about a special request or project, ask for pricing on a specific task, or ask how to become one of our WebSecretaries.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container contact-grid">
+        <div>
+          <h2>Talk to us</h2>
+          <div class="contact-item">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></div>
+            <div><strong>Call or text</strong><a href="tel:+14047212620">+1 (404) 721-2620</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg></div>
+            <div><strong>Email</strong><a href="mailto:info@WebSecretaries.com">info@WebSecretaries.com</a></div>
+          </div>
+          <p class="note">For large orders, corporate orders or special project pricing, please call us so we can discuss your needs.</p>
+        </div>
+
+        <div class="card" id="request">
+          <h2>Send a request</h2>
+          <p style="color:var(--muted)">Include as much background as you can and attach any files we'll need. We'll reply with pricing and next steps.</p>
+          <form id="contact-form" action="https://usebasin.com/f/YOUR_FORM_ID" method="POST" enctype="multipart/form-data">
+            <div class="row">
+              <div class="field">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" autocomplete="email" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="field">
+                <label for="phone">Phone <span class="opt">(optional)</span></label>
+                <input type="tel" id="phone" name="phone" autocomplete="tel">
+              </div>
+              <div class="field">
+                <label for="service">What do you need?</label>
+                <select id="service" name="service">
+                  <option>Typing services</option>
+                  <option>Dictation</option>
+                  <option>Editing &amp; proofreading</option>
+                  <option>Presentation development</option>
+                  <option>Travel planning</option>
+                  <option>Administrative assistant</option>
+                  <option>Accounting help</option>
+                  <option>Retained services</option>
+                  <option>Pool services / large job</option>
+                  <option>Becoming a WebSecretary</option>
+                  <option selected>Something else</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="message">Project details</label>
+              <textarea id="message" name="message" required placeholder="What needs doing, any deadline, and how you'd like it delivered."></textarea>
+            </div>
+            <div class="field">
+              <span id="attachments-label" style="display:block;font-weight:600;font-size:0.93rem;margin-bottom:6px">Files <span class="opt">(optional)</span></span>
+              <label class="file-drop" id="file-drop" for="attachments" style="font-weight:400">
+                <input type="file" id="attachments" name="attachments" multiple aria-labelledby="attachments-label">
+                <strong style="color:var(--red)">Choose files</strong> or drag them here
+                <p class="hint">Documents, images, audio or spreadsheets, up to 25 MB in total</p>
+                <ul class="file-list" id="file-list"></ul>
+              </label>
+            </div>
+            <div class="hp" aria-hidden="true">
+              <label for="website">Leave this empty</label>
+              <input type="text" id="website" name="_gotcha" tabindex="-1" autocomplete="off">
+            </div>
+            <div class="field">
+              <label class="consent"><input type="checkbox" name="consent" value="yes" required> I agree that WebSecretaries may use the information and files I send to respond to my request, as described in the <a href="privacy.html">Privacy Policy</a>.</label>
+            </div>
+            <button class="btn" type="submit">Send Request</button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="logo" href="./">WebSecretaries<span>.com</span></a>
+          <p style="margin-top:12px">Affordable virtual personal assistant and secretarial services. Let us help you get more time in your day!</p>
+          <p>Text or call <a href="tel:+14047212620">+1 (404) 721-2620</a><br><a href="mailto:info@WebSecretaries.com">info@WebSecretaries.com</a></p>
+        </div>
+        <div>
+          <h3>Company</h3>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="contact.html#request">Become a WebSecretary</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Services</h3>
+          <ul>
+            <li><a href="services.html">Services &amp; Pricing</a></li>
+            <li><a href="contact.html#request">Request a Quote</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="refund.html">Refund Policy</a></li>
+            <li><a href="cookies.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">&copy; <span id="year">2026</span> Data Basics International, Inc. and WebSecretaries.com. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
