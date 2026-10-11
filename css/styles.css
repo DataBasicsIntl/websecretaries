@@ -47,9 +47,11 @@ p { margin: 0 0 1em; }
   border-bottom: 1px solid var(--line);
 }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
-.logo { font-family: "Marcellus SC", var(--serif); font-size: 1.55rem; text-decoration: none; color: var(--red); letter-spacing: 0.01em; white-space: nowrap; }
-.logo:hover { color: var(--red); }
-.logo span { font-family: "Times New Roman", Times, "Liberation Serif", serif; color: var(--ink); font-size: 0.8em; margin-left: 1px; }
+/* Wordmark: "WebSecretaries" is an SVG of the Exotica font; ".com" is Times-style text */
+.logo { display: inline-flex; align-items: baseline; text-decoration: none; white-space: nowrap; font-size: 1.45rem; line-height: 1; }
+.logo img { display: inline-block; height: 0.98em; width: auto; }
+.logo span { font-family: "Times New Roman", Times, "Liberation Serif", serif; color: var(--ink); font-size: 0.8em; margin-left: 2px; }
+@media (max-width: 400px) { .logo { font-size: 1.2rem; } }
 .nav { display: flex; align-items: center; gap: 6px; }
 .nav a { color: var(--ink); text-decoration: none; font-weight: 500; font-size: 0.97rem; padding: 8px 12px; border-radius: 8px; }
 .nav a:hover { background: var(--cream); }
@@ -198,7 +200,7 @@ mark { background: #fff2a8; padding: 0 3px; border-radius: 3px; }
 .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 32px; }
 @media (max-width: 860px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 520px) { .footer-grid { grid-template-columns: 1fr; } }
-.site-footer .logo { color: #ff6b70; font-size: 1.4rem; }
+.site-footer .logo { font-size: 1.35rem; }
 .site-footer .logo span { color: #fff; }
 .site-footer h3 { font-family: var(--sans); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.14em; color: #fff; margin-bottom: 14px; font-weight: 600; }
 .site-footer ul { list-style: none; padding: 0; margin: 0; }
