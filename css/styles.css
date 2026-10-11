@@ -49,7 +49,7 @@ p { margin: 0 0 1em; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px; }
 .logo { font-family: "Marcellus SC", var(--serif); font-size: 1.55rem; text-decoration: none; color: var(--red); letter-spacing: 0.01em; white-space: nowrap; }
 .logo:hover { color: var(--red); }
-.logo span { font-family: var(--serif); color: var(--ink); font-size: 0.85em; }
+.logo span { font-family: "Times New Roman", Times, "Liberation Serif", serif; color: var(--ink); font-size: 0.8em; margin-left: 1px; }
 .nav { display: flex; align-items: center; gap: 6px; }
 .nav a { color: var(--ink); text-decoration: none; font-weight: 500; font-size: 0.97rem; padding: 8px 12px; border-radius: 8px; }
 .nav a:hover { background: var(--cream); }
