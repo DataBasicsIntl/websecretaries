@@ -33,10 +33,30 @@ const ALLOWED_EXT = [
 ];
 
 // ---------- Helpers ----------
+// The website submits the form as a normal page POST (HostGator's firewall blocks
+// cross-site fetch requests), so by default we redirect back to the website:
+// to /thanks.html on success, or to /contact.html?error=... on failure.
+// Clients that ask for JSON (Accept: application/json) get JSON instead.
+function return_base(): string {
+    // e.g. "https://websecretaries.com/" or "https://databasicsintl.github.io/websecretaries/"
+    $r = rtrim((string)($_POST['_return'] ?? ''), '/');
+    foreach (ALLOWED_ORIGINS as $o) {
+        if (($r === $o || strpos($r, $o . '/') === 0) && preg_match('#^https?://[A-Za-z0-9.:-]+(/[A-Za-z0-9._-]+)*$#', $r)) {
+            return $r;
+        }
+    }
+    return 'https://websecretaries.com';
+}
+
 function respond(int $status, bool $ok, string $message): void {
-    http_response_code($status);
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['ok' => $ok, 'message' => $message]);
+    if (stripos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false) {
+        http_response_code($status);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['ok' => $ok, 'message' => $message]);
+        exit;
+    }
+    $url = return_base() . ($ok ? '/thanks.html' : '/contact.html?error=' . rawurlencode($message) . '#request');
+    header('Location: ' . $url, true, 303);
     exit;
 }
 
@@ -69,7 +89,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
     exit;
 }
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-    respond(405, false, 'Method not allowed.');
+    header('Location: https://websecretaries.com/contact.html', true, 302);
+    exit;
 }
 if ($origin !== '' && !in_array($origin, ALLOWED_ORIGINS, true)) {
     respond(403, false, 'Forbidden.');

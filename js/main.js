@@ -67,35 +67,32 @@
     }
   });
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    status.style.color = "";
+  // Tell the form handler which site to send the visitor back to (live site, or local preview)
+  var ret = document.getElementById("return-to");
+  if (ret) ret.value = window.location.origin + window.location.pathname.replace(/[^\/]*$/, "");
 
+  // Show an error passed back from the form handler (contact.html?error=...)
+  var err = new URLSearchParams(window.location.search).get("error");
+  if (err) {
+    status.style.color = "var(--red)";
+    status.textContent = err;
+  }
+
+  // The form submits as a normal page POST; the handler redirects to thanks.html
+  form.addEventListener("submit", function (e) {
+    status.style.color = "";
     if (input.files.length > MAX_FILES || totalBytes() > MAX_TOTAL_MB * 1048576) {
+      e.preventDefault();
       status.style.color = "var(--red)";
-      status.textContent = "Your files are too large to send here. Please email them to info@WebSecretaries.com.";
+      status.textContent = "Your files are too large to send here (" + MAX_FILES + " files / " + MAX_TOTAL_MB + " MB max). Please email them to info@WebSecretaries.com.";
       return;
     }
+    form.querySelector("button[type=submit]").disabled = true;
+    status.textContent = input.files.length ? "Sending your request and files… please wait." : "Sending…";
+  });
 
-    var button = form.querySelector("button[type=submit]");
-    button.disabled = true;
-    status.textContent = "Sending…";
-
-    fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
-      .then(function (res) {
-        return res.json().catch(function () { return {}; }).then(function (data) {
-          if (!res.ok || !data.ok) throw { fromServer: true, message: data.message };
-          form.reset();
-          list.innerHTML = "";
-          status.textContent = data.message || "Thank you! Your request has been sent. We'll be in touch shortly.";
-        });
-      })
-      .catch(function (err) {
-        status.style.color = "var(--red)";
-        status.textContent = (err && err.fromServer && err.message)
-          ? err.message
-          : "Sorry, something went wrong. Please email info@WebSecretaries.com or call +1 (404) 721-2620.";
-      })
-      .finally(function () { button.disabled = false; });
+  // If the visitor comes back with the browser's Back button, re-enable the button
+  window.addEventListener("pageshow", function () {
+    form.querySelector("button[type=submit]").disabled = false;
   });
 })();
