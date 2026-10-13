@@ -18,7 +18,8 @@
   var form = document.getElementById("contact-form");
   if (!form) return;
 
-  var MAX_TOTAL_MB = 25;
+  var MAX_TOTAL_MB = 20;
+  var MAX_FILES = 10;
   var input = document.getElementById("attachments");
   var drop = document.getElementById("file-drop");
   var list = document.getElementById("file-list");
@@ -37,6 +38,12 @@
       var li = document.createElement("li");
       li.textContent = f.name + " (" + (f.size / 1048576).toFixed(1) + " MB)";
       list.appendChild(li);
+    }
+    if (input.files.length > MAX_FILES) {
+      var many = document.createElement("li");
+      many.className = "err";
+      many.textContent = "Please choose no more than " + MAX_FILES + " files.";
+      list.appendChild(many);
     }
     if (totalBytes() > MAX_TOTAL_MB * 1048576) {
       var warn = document.createElement("li");
@@ -64,11 +71,7 @@
     e.preventDefault();
     status.style.color = "";
 
-    if (form.action.indexOf("YOUR_FORM_ID") !== -1) {
-      status.textContent = "The online form isn't switched on yet. Please email info@WebSecretaries.com or call +1 (404) 721-2620.";
-      return;
-    }
-    if (totalBytes() > MAX_TOTAL_MB * 1048576) {
+    if (input.files.length > MAX_FILES || totalBytes() > MAX_TOTAL_MB * 1048576) {
       status.style.color = "var(--red)";
       status.textContent = "Your files are too large to send here. Please email them to info@WebSecretaries.com.";
       return;
@@ -80,14 +83,18 @@
 
     fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
       .then(function (res) {
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        form.reset();
-        list.innerHTML = "";
-        status.textContent = "Thank you! Your request has been sent. We'll be in touch shortly.";
+        return res.json().catch(function () { return {}; }).then(function (data) {
+          if (!res.ok || !data.ok) throw { fromServer: true, message: data.message };
+          form.reset();
+          list.innerHTML = "";
+          status.textContent = data.message || "Thank you! Your request has been sent. We'll be in touch shortly.";
+        });
       })
-      .catch(function () {
+      .catch(function (err) {
         status.style.color = "var(--red)";
-        status.textContent = "Sorry, something went wrong. Please email info@WebSecretaries.com or call +1 (404) 721-2620.";
+        status.textContent = (err && err.fromServer && err.message)
+          ? err.message
+          : "Sorry, something went wrong. Please email info@WebSecretaries.com or call +1 (404) 721-2620.";
       })
       .finally(function () { button.disabled = false; });
   });
