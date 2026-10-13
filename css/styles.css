@@ -57,6 +57,7 @@ p { margin: 0 0 1em; }
 .nav a:hover { background: var(--cream); }
 .nav a[aria-current="page"] { color: var(--red); }
 .nav .btn { margin-left: 8px; }
+.nav a.btn:hover { background: var(--red-dark); }
 .nav-toggle { display: none; background: none; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; cursor: pointer; }
 .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--ink); margin: 4px 0; }
 
