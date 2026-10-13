@@ -3,6 +3,7 @@
   --red: #b3141c;
   --red-dark: #8e0f16;
   --red-tint: #fbeeee;
+  --hero-accent: #ff4f57;   /* brand red, brightened to stay readable on the dark hero photo */
   --ink: #1d1d1f;
   --muted: #5b5b63;
   --line: #e6e2dd;
@@ -93,7 +94,8 @@ p { margin: 0 0 1em; }
 .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(20,20,22,0.88) 0%, rgba(20,20,22,0.7) 50%, rgba(20,20,22,0.35) 100%); }
 .hero .container { position: relative; padding-top: clamp(72px, 12vw, 140px); padding-bottom: clamp(72px, 12vw, 140px); }
 .hero h1 { max-width: 15em; }
-.hero h1 em { font-style: normal; color: #ff9a9e; }
+.hero h1 em { font-style: normal; color: var(--hero-accent); }
+.hero .eyebrow { color: var(--hero-accent); }
 .hero p { font-size: 1.15rem; max-width: 34em; opacity: 0.92; }
 .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .hero .btn-outline { color: #fff !important; }
