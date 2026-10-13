@@ -71,11 +71,23 @@
   var ret = document.getElementById("return-to");
   if (ret) ret.value = window.location.origin + window.location.pathname.replace(/[^\/]*$/, "");
 
-  // Show an error passed back from the form handler (contact.html?error=...)
+  // Show an error passed back from the form handler (contact.html?error=code).
+  // Only these fixed messages are ever shown, never text taken from the URL.
+  var CONTACT = " Please email info@WebSecretaries.com or call +1 (404) 721-2620.";
+  var ERRORS = {
+    missing: "Please fill in your name, project details, and tick the consent box.",
+    email: "Please enter a valid email address.",
+    toolarge: "Your files are too large to send here (" + MAX_TOTAL_MB + " MB max)." + CONTACT,
+    toomany: "Please attach no more than " + MAX_FILES + " files.",
+    filetype: "One of your files is a type we can't accept through the form." + CONTACT,
+    upload: "A file could not be uploaded. Please try again.",
+    ratelimit: "Too many requests have been sent from your connection. Please try again later." + CONTACT,
+    failed: "Sorry, your request could not be sent." + CONTACT
+  };
   var err = new URLSearchParams(window.location.search).get("error");
   if (err) {
     status.style.color = "var(--red)";
-    status.textContent = err;
+    status.textContent = ERRORS.hasOwnProperty(err) ? ERRORS[err] : ERRORS.failed;
   }
 
   // The form submits as a normal page POST; the handler redirects to thanks.html

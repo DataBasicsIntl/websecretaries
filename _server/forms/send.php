@@ -9,6 +9,10 @@
  * (This folder starts with "_" so GitHub Pages does not publish it.)
  */
 
+// Never show PHP errors (they can reveal server paths) and use local time in emails
+ini_set('display_errors', '0');
+date_default_timezone_set('America/New_York');
+
 // ---------- Settings ----------
 const TO_EMAIL       = 'info@WebSecretaries.com';
 const FROM_EMAIL     = 'forms@websecretaries.com';   // must be @websecretaries.com so the mail passes SPF
@@ -48,14 +52,15 @@ function return_base(): string {
     return 'https://websecretaries.com';
 }
 
-function respond(int $status, bool $ok, string $message): void {
+function respond(int $status, bool $ok, string $message, string $code = ''): void {
     if (stripos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false) {
         http_response_code($status);
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['ok' => $ok, 'message' => $message]);
         exit;
     }
-    $url = return_base() . ($ok ? '/thanks.html' : '/contact.html?error=' . rawurlencode($message) . '#request');
+    // Only a short error code goes in the URL; the website shows its own fixed message for it.
+    $url = return_base() . ($ok ? '/thanks.html' : '/contact.html?error=' . ($code ?: 'failed') . '#request');
     header('Location: ' . $url, true, 303);
     exit;
 }
@@ -94,7 +99,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
 }
 // Upload bigger than PHP's post_max_size: PHP drops the whole body.
 if (empty($_POST) && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
-    respond(413, false, 'Your files are too large. Please email them to ' . TO_EMAIL . '.');
+    respond(413, false, 'Your files are too large. Please email them to ' . TO_EMAIL . '.', 'toolarge');
 }
 
 // ---------- Spam checks ----------
@@ -113,7 +118,7 @@ if (is_file($rateFile)) {
     );
 }
 if (count($hits) >= RATE_LIMIT) {
-    respond(429, false, 'Too many requests. Please try again later, or email ' . TO_EMAIL . '.');
+    respond(429, false, 'Too many requests. Please try again later, or email ' . TO_EMAIL . '.', 'ratelimit');
 }
 
 // ---------- Validate fields ----------
@@ -125,10 +130,10 @@ $message = clean_text($_POST['message'] ?? '');
 $consent = ($_POST['consent'] ?? '') === 'yes';
 
 if ($name === '' || $message === '' || !$consent) {
-    respond(422, false, 'Please fill in your name, project details, and the consent box.');
+    respond(422, false, 'Please fill in your name, project details, and the consent box.', 'missing');
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    respond(422, false, 'Please enter a valid email address.');
+    respond(422, false, 'Please enter a valid email address.', 'email');
 }
 
 // ---------- Validate files ----------
@@ -140,17 +145,17 @@ if (!empty($_FILES['attachments']) && is_array($_FILES['attachments']['name'])) 
     for ($i = 0; $i < $count; $i++) {
         if ($f['error'][$i] === UPLOAD_ERR_NO_FILE) continue;
         if ($f['error'][$i] === UPLOAD_ERR_INI_SIZE || $f['error'][$i] === UPLOAD_ERR_FORM_SIZE) {
-            respond(413, false, 'A file is too large. Please email large files to ' . TO_EMAIL . '.');
+            respond(413, false, 'A file is too large. Please email large files to ' . TO_EMAIL . '.', 'toolarge');
         }
         if ($f['error'][$i] !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp_name'][$i])) {
-            respond(400, false, 'A file could not be uploaded. Please try again.');
+            respond(400, false, 'A file could not be uploaded. Please try again.', 'upload');
         }
         $orig = basename((string)$f['name'][$i]);
         $safe = preg_replace('/[^A-Za-z0-9._ -]+/', '_', $orig);
         $safe = mb_substr(trim($safe, ' .') ?: 'file', 0, 120);
         $ext  = strtolower(pathinfo($safe, PATHINFO_EXTENSION));
         if (!in_array($ext, ALLOWED_EXT, true)) {
-            respond(415, false, "Sorry, files of type .$ext can't be sent here. Please email it to " . TO_EMAIL . '.');
+            respond(415, false, "Sorry, files of type .$ext can't be sent here. Please email it to " . TO_EMAIL . '.', 'filetype');
         }
         $size = (int)$f['size'][$i];
         $total += $size;
@@ -158,10 +163,10 @@ if (!empty($_FILES['attachments']) && is_array($_FILES['attachments']['name'])) 
     }
 }
 if (count($attachments) > MAX_FILES) {
-    respond(413, false, 'Please attach no more than ' . MAX_FILES . ' files.');
+    respond(413, false, 'Please attach no more than ' . MAX_FILES . ' files.', 'toomany');
 }
 if ($total > MAX_TOTAL_MB * 1048576) {
-    respond(413, false, 'Files total more than ' . MAX_TOTAL_MB . ' MB. Please email large files to ' . TO_EMAIL . '.');
+    respond(413, false, 'Files total more than ' . MAX_TOTAL_MB . ' MB. Please email large files to ' . TO_EMAIL . '.', 'toolarge');
 }
 
 // ---------- Build email ----------
@@ -211,6 +216,6 @@ $hits[] = $now;
 @file_put_contents($rateFile, implode(',', $hits), LOCK_EX);
 
 if (!$sent) {
-    respond(500, false, 'Sorry, your request could not be sent. Please email ' . TO_EMAIL . ' or call +1 (404) 721-2620.');
+    respond(500, false, 'Sorry, your request could not be sent. Please email ' . TO_EMAIL . ' or call +1 (404) 721-2620.', 'failed');
 }
 respond(200, true, "Thank you! Your request has been sent. We'll be in touch shortly.");
