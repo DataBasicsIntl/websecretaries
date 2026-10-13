@@ -55,7 +55,7 @@
         <div class="card" id="request">
           <h2>Send a request</h2>
           <p style="color:var(--muted)">Include as much background as you can and attach any files we'll need. We'll reply with pricing and next steps.</p>
-          <form id="contact-form" action="https://usebasin.com/f/YOUR_FORM_ID" method="POST" enctype="multipart/form-data">
+          <form id="contact-form" action="https://usebasin.com/f/9cebace2027a" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
             <div class="row">
               <div class="field">
                 <label for="name">Name</label>
@@ -95,7 +95,7 @@
             <div class="field">
               <span id="attachments-label" style="display:block;font-weight:600;font-size:0.93rem;margin-bottom:6px">Files <span class="opt">(optional)</span></span>
               <label class="file-drop" id="file-drop" for="attachments" style="font-weight:400">
-                <input type="file" id="attachments" name="attachments" multiple aria-labelledby="attachments-label">
+                <input type="file" id="attachments" name="attachments[]" multiple aria-labelledby="attachments-label">
                 <strong style="color:var(--red)">Choose files</strong> or drag them here
                 <p class="hint">Documents, images, audio or spreadsheets, up to 25 MB in total</p>
                 <ul class="file-list" id="file-list"></ul>
