@@ -152,6 +152,9 @@ p { margin: 0 0 1em; }
 .cta .container { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding-top: 48px; padding-bottom: 48px; }
 .cta h2 { margin: 0 0 6px; }
 .cta p { margin: 0; opacity: 0.92; }
+.cta p a { color: #fff; font-weight: 600; }
+.cta p a:hover { color: #fff; opacity: 0.85; }
+.contact-item strong a { color: inherit; }
 
 /* Contact */
 .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; align-items: start; }
