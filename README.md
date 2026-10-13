@@ -1,6 +1,6 @@
-﻿# WebSecretaries.com
+# WebSecretaries.com
 
-Static website for WebSecretaries.com (Data Basics International, Inc.), hosted on GitHub Pages.
+Static website for WebSecretaries.com, hosted on GitHub Pages.
 
 - Pages: index, about, services, contact, terms, privacy, refund, cookies, 404
 - Old WordPress URLs redirect via small folders (e.g. `contact-us/`)
