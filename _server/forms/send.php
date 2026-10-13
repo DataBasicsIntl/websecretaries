@@ -92,10 +92,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     header('Location: https://websecretaries.com/contact.html', true, 302);
     exit;
 }
-if ($origin !== '' && !in_array($origin, ALLOWED_ORIGINS, true)) {
-    respond(403, false, 'Forbidden.');
-}
-
 // Upload bigger than PHP's post_max_size: PHP drops the whole body.
 if (empty($_POST) && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
     respond(413, false, 'Your files are too large. Please email them to ' . TO_EMAIL . '.');
